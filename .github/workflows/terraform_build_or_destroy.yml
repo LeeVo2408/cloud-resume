@@ -1,0 +1,78 @@
+name: Build or destroy infrastructure
+
+on:
+  workflow_dispatch:
+    inputs:
+        action_type:
+            description: "Type of action you want to take ('build' or 'destroy')"
+            required: true
+        environment_type:
+            description: "Type of environment you want to act on ('nonprod' or 'prod')"
+            required: true
+
+env: 
+    AWS_REGION: ap-southeast-2
+    IAM_ROLE: "arn:aws:iam::252874068638:role/GitHubAction-AssumeRoleWithAction1"
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    build:
+        name: "build"
+        runs-on: ubuntu-latest
+        if: inputs.action_type == 'build'
+   
+        steps:
+            - name: configure aws credentials
+              uses: aws-actions/configure-aws-credentials@master
+              with:
+                role-to-assume: ${{ env.IAM_ROLE }}
+                aws-region: ${{ env.AWS_REGION }}
+
+            - uses: actions/checkout@v3
+            - uses: hashicorp/setup-terraform@v2
+
+            - name: Terraform Init
+              id: init
+              run: terraform init
+
+            - name: Terraform Plan
+              id: plan
+              run: terraform plan
+              continue-on-error: false
+
+            - name: Terraform Apply
+              id: apply
+              run: terraform apply -auto-approve
+              continue-on-error: false
+
+    destroy: 
+        name: "destroy"
+        runs-on: ubuntu-latest
+        if: inputs.action_type == 'destroy'
+        
+
+        steps:
+            - name: configure aws credentials
+              uses: aws-actions/configure-aws-credentials@master
+              with:
+                role-to-assume: ${{ env.IAM_ROLE }}
+                aws-region: ${{ env.AWS_REGION }}
+
+            - uses: actions/checkout@v3
+            - uses: hashicorp/setup-terraform@v2
+
+            - name: Terraform Init
+              id: init
+              run: terraform init
+
+            - name: Terraform Plan
+              id: plan
+              run: terraform plan
+              continue-on-error: false
+
+            - name: Terraform Destroy
+              id: destroy
+              run: terraform destroy -auto-approve
+              continue-on-error: false
