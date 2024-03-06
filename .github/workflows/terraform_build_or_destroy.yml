@@ -10,8 +10,6 @@ on:
             description: "Type of environment you want to act on ('nonprod' or 'prod')"
             required: true
 
-    
-
 env: 
     AWS_REGION: ap-southeast-2
     IAM_ROLE: "arn:aws:iam::252874068638:role/GitHubAction-AssumeRoleWithAction1"
@@ -24,12 +22,11 @@ jobs:
         name: "build"
         runs-on: ubuntu-latest
         if: inputs.action_type == 'build'
-          
+        
         defaults:
           run:
             working-directory: "${{ inputs.environment_type }}/"
 
-   
         steps:
             - name: configure aws credentials
               uses: aws-actions/configure-aws-credentials@master
@@ -62,7 +59,6 @@ jobs:
         defaults:
           run:
             working-directory: "${{ inputs.environment_type }}/"
-
 
         steps:
             - name: configure aws credentials
