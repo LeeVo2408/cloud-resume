@@ -25,7 +25,7 @@ terraform {
     key     = "terraform.tfstate"
     region  = "ap-southeast-2"
     encrypt = true
-    dynamodb_table = "terraforn-state-lock-Cloud-Resumeterraforn-state-lock-Cloud-Resume"
+    dynamodb_table = "terraforn-state-lock-Cloud-Resume"
   }
 }
 //DynamoDB is set up mannually so even if we delete the infrastructure `, eh, too bad, we still have it in the cojso;
