@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "example" {
-  bucket = "my-tf-test-bucket"
+  bucket = "lee-tf-test-bucket-for-the"
   acl = "private"
 
 }
