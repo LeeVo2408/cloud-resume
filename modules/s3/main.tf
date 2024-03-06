@@ -46,7 +46,7 @@ resource "aws_s3_object" "error" {
 #tfsec:ignore:aws-s3-enable-bucket-logging
 #tfsec:ignore:aws-s3-encryption-customer-key
 resource "aws_s3_bucket" "cloud_resume_logging_bucket" {
-  bucket = "tf-aws-lilyvo-cloud-resume-challenge--${var.environment}-logging"
+  bucket = "tf-aws-mgrassi-cloud-resume-challenge-${var.environment}-logging"
 }
 
 resource "aws_s3_bucket_versioning" "cloud_resume_logging_bucket" {
@@ -77,10 +77,6 @@ resource "aws_s3_bucket_public_access_block" "cloud_resume_logging_bucket" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
-resource "aws_s3_bucket_acl" "cloud_resume_logging_bucket" {
-  bucket = aws_s3_bucket.cloud_resume_logging_bucket.id
-  acl    = "log-delivery-write"
-}
 
 resource "aws_s3_bucket_ownership_controls" "cloud_resume_logging_bucket" {
   bucket = aws_s3_bucket.cloud_resume_logging_bucket.id
@@ -88,6 +84,11 @@ resource "aws_s3_bucket_ownership_controls" "cloud_resume_logging_bucket" {
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
+}
+
+resource "aws_s3_bucket_acl" "cloud_resume_logging_bucket" {
+  bucket = aws_s3_bucket.cloud_resume_logging_bucket.id
+  acl    = "log-delivery-write"
 }
 
 resource "aws_s3_bucket_logging" "cloud_resume_logging_bucket" {
