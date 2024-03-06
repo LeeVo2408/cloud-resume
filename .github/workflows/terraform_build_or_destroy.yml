@@ -4,8 +4,9 @@ on:
   workflow_dispatch:
     inputs:
         action_type:
-            description: "Type of environment you want to act on ('nonprod' or 'prod')"
+            description: "Type of action you want to take ('build' or 'destroy')"
             required: true
+    
 
 env: 
     AWS_REGION: ap-southeast-2
@@ -49,6 +50,7 @@ jobs:
         runs-on: ubuntu-latest
         if: inputs.action_type == 'destroy'
         
+
 
         steps:
             - name: configure aws credentials
